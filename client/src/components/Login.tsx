@@ -27,7 +27,17 @@ export default function Login() {
         if (data.success) {
           // Redirect the user to the home page
           Cookies.set("token", data.token);
-          navigate("/");
+          navigate("/", {
+            state: {
+              _id: data.account._id,
+              fullName: data.account.fullName,
+              userName: data.account.userName,
+              email: data.account.email,
+              friends: data.account.friends,
+              chats: data.account.chats,
+              notifications: data.account.notifications,
+            },
+          });
         } else {
           // Display an error message
           alert("Invalid username or password");
@@ -58,6 +68,7 @@ export default function Login() {
           />
         </div>
         <button type="submit">Login</button>
+        <button onClick={() => navigate("/signup")}>Signup</button>
       </form>
     </div>
   );

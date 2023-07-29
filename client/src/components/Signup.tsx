@@ -49,7 +49,17 @@ export default function Signup() {
         .then((data) => {
           if (data.success) {
             // Redirect the user to the home page
-            navigate("/");
+            navigate("/", {
+              state: {
+                _id: data.account._id,
+                fullName: data.account.fullName,
+                userName: data.account.userName,
+                email: data.account.email,
+                friends: data.account.friends,
+                chats: data.account.chats,
+                notifications: data.account.notifications,
+              },
+            });
           } else {
             // Display an error message
             alert(data.message);
@@ -99,6 +109,7 @@ export default function Signup() {
           />
         </div>
         <button type="submit">Sign Up</button>
+        <button onClick={() => navigate("/login")}>Login</button>
       </form>
     </div>
   );

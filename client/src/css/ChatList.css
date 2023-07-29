@@ -1,0 +1,12 @@
+
+.chat-list {
+    margin:4px, 4px;
+    padding:4px;
+    width: max-content;
+    height: 800px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align:justify;
+    position: relative;
+    left: 0px;
+}
