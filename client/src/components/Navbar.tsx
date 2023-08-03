@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "../css/Navbar.css";
+import CheckAuth from "../functions/CheckAuth";
 
 function Navbar() {
   const [click, setClick] = useState(false);
   const menuOnClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
   const [button, setButton] = useState(true);
 
   const showButton = () => {
@@ -20,6 +20,10 @@ function Navbar() {
   //the event we listen to and the function we run on that event
   window.addEventListener("resize", showButton);
 
+  const checkAuth = async () => {
+    CheckAuth();
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -31,20 +35,14 @@ function Navbar() {
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
-              <Link to="/login" className="nav-links" onClick={closeMobileMenu}>
-                Notifications
-              </Link>
+            <li className="nav-item" onClick={checkAuth}>
+              Notifications
             </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Profile
-              </Link>
+            <li className="nav-item" onClick={checkAuth}>
+              Profile
             </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Settings
-              </Link>
+            <li className="nav-item" onClick={checkAuth}>
+              Settings
             </li>
           </ul>
           {button && (

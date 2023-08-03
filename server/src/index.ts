@@ -7,6 +7,7 @@ import { Server } from 'socket.io'
 import cors from 'cors'
 import bcrypt from "bcrypt"
 import AccountModel from './models/Account'
+import ChatModel from './models/Chat'
 import jwt, { Jwt, JwtPayload } from "jsonwebtoken"
 
 const PORT = 5001
@@ -46,19 +47,16 @@ io.on('connection', (socket)=>{
 })
 
 const verifyJWT = (req:Request, res:Response, next: ()=> void) =>{
-    const token = req.cookies.token
-    if(!token){
-        res.send("No token provided with request")
+    //console.log(req)
+    if(req && req.body && req.body.accessToken){
+        if(jwt.verify(req.body.accessToken, process.env.JWT_SECRET!)){
+            console.log("Fuck Yeah")
+            next();
+        } else{
+            console.log("Invalid Token")
+        }        
     } else {
-        //jwt.verify(token, process.env.JWT_SECRET!, (err, decoded: Jwt)=>{
-        //    if(err){
-        //        res.send({auth: false, message: "Invalid Token"})
-        //    } else {
-        //        req.body.userId = decoded.userId
-        //        next()
-        //    }
-        //})
-        next();
+        res.send("No token provided with request")
     }
 }
 
@@ -93,8 +91,8 @@ app.post("/login", async (req:Request, res:Response) => {
 });
  
 //verify authentication
-app.get("/auth", verifyJWT, (req:Request, res:Response) => {
-    res.send("Hello Mike")
+app.post("/auth", verifyJWT, (req:Request, res:Response) => {
+    res.send({success: true})
 });
 
 //creating a new account
@@ -150,7 +148,46 @@ app.post('/get-user-chats', verifyJWT, async (req: Request, res: Response) => {
         res.send({"message":"Account not found"})
     }
     
-}); 
+});
+
+app.post('/create-chat', verifyJWT, async (req: Request, res: Response) => {
+    const requestingAccount = await AccountModel.find({_id: req.body._id})    
+    if(requestingAccount.length>0){
+        console.log("Fetching user's chats")
+        res.send({"success":true})
+        //res.json(createdAccount)
+    } else {
+        res.status(401)
+        res.send({"message":"Account not found"})
+    }
+    
+});
+
+app.delete('/delete-chat/:chatId', verifyJWT, async (req: Request, res: Response) => {
+    const requestingAccount = await AccountModel.find({_id: req.body._id})    
+    if(requestingAccount.length>0){
+        console.log("Fetching user's chats")
+        res.send({"success":true})
+        //res.json(createdAccount)
+    } else {
+        res.status(401)
+        res.send({"message":"Account not found"})
+    }
+    
+});
+
+app.get('/get-chat/:chatId', verifyJWT, async (req: Request, res: Response) => {
+    const requestingAccount = await AccountModel.find({_id: req.body._id})    
+    if(requestingAccount.length>0){
+        console.log("Fetching user's chats")
+        res.send({"success":true})
+        //res.json(createdAccount)
+    } else {
+        res.status(401)
+        res.send({"message":"Account not found"})
+    }
+    
+});
  
 //this is the connection to the db cluster
 console.log('Connecting to Database')

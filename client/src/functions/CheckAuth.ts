@@ -1,14 +1,25 @@
+import Cookies from "js-cookie";
 
-
-export default function CheckAuth(access_token: string){
-
+export default async function CheckAuth(){
+    const accessToken = Cookies.get("token");
     fetch("http://localhost:5001/auth", {
+      method: "POST",
       headers: {
-        "access-token": access_token
-      }
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken,
+      }),
     })
-      .then((response) => {
-        console.log(response)
-      })
-
+    .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Authorized User");
+        } else {
+          // Display an error message
+          console.log("Unauthorized User");
+        }
+      });
+      console.log("insta false")
+      
 }
