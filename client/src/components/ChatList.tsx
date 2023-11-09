@@ -5,10 +5,13 @@ export default function ChatList() {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   ];
   return (
-    <div className="chat-list">
-      {temp.map(() => (
-        <ChatCard />
-      ))}
-    </div>
+    <>
+      <h2 className="chat-list-header">Messages</h2>
+      <div className="chat-list">
+        {temp.map(() => (
+          <ChatCard />
+        ))}
+      </div>
+    </>
   );
 }

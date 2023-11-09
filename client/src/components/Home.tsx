@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import ChatList from "./ChatList";
 import Chat from "./Chat";
 import Cookies from "js-cookie";
+import CheckAuth from "../functions/CheckAuth";
 
 const socket = io("http://localhost:5001");
 
@@ -40,7 +41,6 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <ChatList />
       <Chat
         socket={socket}
         chatId="1"

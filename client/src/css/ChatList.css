@@ -10,3 +10,8 @@
     position: relative;
     left: 0px;
 }
+
+.chat-list-header{
+    position: relative;
+    left: -800px;
+}
